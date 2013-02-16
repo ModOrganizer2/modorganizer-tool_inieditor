@@ -89,18 +89,18 @@ void IniEditor::display() const
     throw MyException(tr("plugin not initialized"));
   }
 
-  TextViewer viewer(parentWidget());
-  viewer.setDescription(tr("Ini files are local to the currently selected profile."));
+  TextViewer *viewer = new TextViewer("Ini Files", parentWidget());
+  viewer->setDescription(tr("Ini files are local to the currently selected profile."));
   std::vector<QString> iniFiles = getIniFiles();
   for (std::vector<QString>::iterator iter = iniFiles.begin(); iter != iniFiles.end(); ++iter) {
     QString fileName = QString("%1/profiles/%2/%3").arg(QApplication::applicationDirPath())
                                                    .arg(m_MOInfo->profileName())
                                                    .arg(*iter);
     if (QFileInfo(fileName).exists()) {
-      viewer.addFile(fileName, true);
+      viewer->addFile(fileName, true);
     }
   }
-  viewer.exec();
+  viewer->show();
 }
 
 
