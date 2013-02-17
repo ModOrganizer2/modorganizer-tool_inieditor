@@ -27,6 +27,10 @@ along with Ini editor plugin.  If not, see <http://www.gnu.org/licenses/>.
 #include <QApplication>
 #include <imoinfo.h>
 
+
+using namespace MOBase;
+
+
 IniEditor::IniEditor()
   : m_MOInfo(NULL)
 {

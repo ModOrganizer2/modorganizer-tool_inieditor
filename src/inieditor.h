@@ -22,22 +22,22 @@ along with Ini editor plugin.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iplugintool.h>
 
-class IniEditor : public IPluginTool
+class IniEditor : public MOBase::IPluginTool
 {
   Q_OBJECT
-  Q_INTERFACES(IPlugin IPluginTool)
+  Q_INTERFACES(MOBase::IPlugin MOBase::IPluginTool)
 
 public:
 
   IniEditor();
 
-  virtual bool init(IOrganizer *moInfo);
+  virtual bool init(MOBase::IOrganizer *moInfo);
   virtual QString name() const;
   virtual QString author() const;
   virtual QString description() const;
-  virtual VersionInfo version() const;
+  virtual MOBase::VersionInfo version() const;
   virtual bool isActive() const;
-  virtual QList<PluginSetting> settings() const;
+  virtual QList<MOBase::PluginSetting> settings() const;
 
   virtual QString displayName() const;
   virtual QString tooltip() const;
@@ -50,7 +50,7 @@ private:
   std::vector<QString> getIniFiles() const;
 
 private:
-  const IOrganizer *m_MOInfo;
+  const MOBase::IOrganizer *m_MOInfo;
 };
 
 #endif // INIEDITOR_H
