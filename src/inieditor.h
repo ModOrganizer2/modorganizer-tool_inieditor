@@ -22,7 +22,7 @@ along with Ini editor plugin.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iplugintool.h>
 
-class IniEditor : public MOBase::IPluginTool
+class IniEditor : public QObject, MOBase::IPluginTool
 {
   Q_OBJECT
   Q_INTERFACES(MOBase::IPlugin MOBase::IPluginTool)
