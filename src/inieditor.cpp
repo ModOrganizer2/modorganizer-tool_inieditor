@@ -69,7 +69,11 @@ bool IniEditor::isActive() const
 
 QList<PluginSetting> IniEditor::settings() const
 {
-  return QList<PluginSetting>();
+  QList<PluginSetting> result;
+  result.push_back(PluginSetting("external", "Use an external editor to open the files", QVariant(false)));
+  result.push_back(PluginSetting("associated", "When using an external editor, use theapplication associated with \"ini\" files. "
+                                 "If false, uses the \"edit\" command which usually invokes regular notepad.", QVariant(true)));
+  return result;
 }
 
 QString IniEditor::displayName() const
@@ -93,18 +97,28 @@ void IniEditor::display() const
     throw MyException(tr("plugin not initialized"));
   }
 
-  TextViewer *viewer = new TextViewer("Ini Files", parentWidget());
-  viewer->setDescription(tr("Ini files are local to the currently selected profile."));
   std::vector<QString> iniFiles = getIniFiles();
-  for (std::vector<QString>::iterator iter = iniFiles.begin(); iter != iniFiles.end(); ++iter) {
-    QString fileName = QString("%1/profiles/%2/%3").arg(QApplication::applicationDirPath())
-                                                   .arg(m_MOInfo->profileName())
-                                                   .arg(*iter);
-    if (QFileInfo(fileName).exists()) {
-      viewer->addFile(fileName, true);
+  if (m_MOInfo->pluginSetting(name(), "external").toBool()) {
+    for (std::vector<QString>::iterator iter = iniFiles.begin(); iter != iniFiles.end(); ++iter) {
+      QString fileName = QString("%1/profiles/%2/%3").arg(QApplication::applicationDirPath())
+                                                     .arg(m_MOInfo->profileName())
+                                                     .arg(*iter);
+      ::ShellExecuteW(NULL,m_MOInfo->pluginSetting(name(), "associated").toBool() ? L"open" : L"edit",
+                      ToWString(fileName).c_str(), NULL, NULL, SW_SHOWNORMAL);
     }
+  } else {
+    TextViewer *viewer = new TextViewer("Ini Files", parentWidget());
+    viewer->setDescription(tr("Ini files are local to the currently selected profile."));
+    for (std::vector<QString>::iterator iter = iniFiles.begin(); iter != iniFiles.end(); ++iter) {
+      QString fileName = QString("%1/profiles/%2/%3").arg(QApplication::applicationDirPath())
+                                                     .arg(m_MOInfo->profileName())
+                                                     .arg(*iter);
+      if (QFileInfo(fileName).exists()) {
+        viewer->addFile(fileName, true);
+      }
+    }
+    viewer->show();
   }
-  viewer->show();
 }
 
 
