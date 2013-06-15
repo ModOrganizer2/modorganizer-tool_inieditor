@@ -7,6 +7,10 @@
 TARGET = iniEditor
 TEMPLATE = lib
 
+contains(QT_VERSION, "^5.*") {
+  QT += widgets
+}
+
 CONFIG += plugins
 CONFIG += dll
 
@@ -23,3 +27,6 @@ RESOURCES += \
 FORMS +=
 
 include(../plugin_template.pri)
+
+OTHER_FILES += \
+    inieditor.json
