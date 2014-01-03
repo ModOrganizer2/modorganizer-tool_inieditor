@@ -71,7 +71,7 @@ QList<PluginSetting> IniEditor::settings() const
 {
   QList<PluginSetting> result;
   result.push_back(PluginSetting("external", "Use an external editor to open the files", QVariant(false)));
-  result.push_back(PluginSetting("associated", "When using an external editor, use theapplication associated with \"ini\" files. "
+  result.push_back(PluginSetting("associated", "When using an external editor, use the application associated with \"ini\" files. "
                                  "If false, uses the \"edit\" command which usually invokes regular notepad.", QVariant(true)));
   return result;
 }
