@@ -100,7 +100,7 @@ void IniEditor::display() const
   std::vector<QString> iniFiles = getIniFiles();
   if (m_MOInfo->pluginSetting(name(), "external").toBool()) {
     for (std::vector<QString>::iterator iter = iniFiles.begin(); iter != iniFiles.end(); ++iter) {
-      QString fileName = QString("%1/profiles/%2/%3").arg(QApplication::applicationDirPath())
+      QString fileName = QString("%1/profiles/%2/%3").arg(qApp->property("dataPath").toString())
                                                      .arg(m_MOInfo->profileName())
                                                      .arg(*iter);
       ::ShellExecuteW(NULL,m_MOInfo->pluginSetting(name(), "associated").toBool() ? L"open" : L"edit",
@@ -110,7 +110,7 @@ void IniEditor::display() const
     TextViewer *viewer = new TextViewer("Ini Files", parentWidget());
     viewer->setDescription(tr("Ini files are local to the currently selected profile."));
     for (std::vector<QString>::iterator iter = iniFiles.begin(); iter != iniFiles.end(); ++iter) {
-      QString fileName = QString("%1/profiles/%2/%3").arg(QApplication::applicationDirPath())
+      QString fileName = QString("%1/profiles/%2/%3").arg(qApp->property("dataPath").toString())
                                                      .arg(m_MOInfo->profileName())
                                                      .arg(*iter);
       if (QFileInfo(fileName).exists()) {
