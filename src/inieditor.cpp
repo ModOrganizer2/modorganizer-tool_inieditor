@@ -44,7 +44,7 @@ bool IniEditor::init(IOrganizer *moInfo)
 
 QString IniEditor::name() const
 {
-  return tr("INI Editor");
+  return "INI Editor";
 }
 
 QString IniEditor::author() const
