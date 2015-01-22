@@ -21,11 +21,12 @@ along with Ini editor plugin.  If not, see <http://www.gnu.org/licenses/>.
 #include "inieditor.h"
 #include "textviewer.h"
 #include <utility.h>
+#include <igameinfo.h>
+#include <imoinfo.h>
 #include <QtPlugin>
 #include <QMessageBox>
 #include <QDir>
 #include <QApplication>
-#include <imoinfo.h>
 
 
 using namespace MOBase;
