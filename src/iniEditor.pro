@@ -26,4 +26,5 @@ FORMS +=
 include(../plugin_template.pri)
 
 OTHER_FILES += \
-    inieditor.json
+    inieditor.json\
+    SConscript
