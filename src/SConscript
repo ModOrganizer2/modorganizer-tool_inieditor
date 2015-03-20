@@ -10,3 +10,6 @@ env.AppendUnique(LIBS = [
 
 lib = env.SharedLibrary('iniEditor', env.Glob('*.cpp') + env.Glob('*.qrc'))
 env.InstallModule(lib)
+
+res = env['QT_USED_MODULES']
+Return('res')
