@@ -60,7 +60,7 @@ QString IniEditor::description() const
 
 VersionInfo IniEditor::version() const
 {
-  return VersionInfo(1, 0, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 0, 1, VersionInfo::RELEASE_FINAL);
 }
 
 bool IniEditor::isActive() const
@@ -114,8 +114,15 @@ void IniEditor::display() const
       QString fileName = QString("%1/profiles/%2/%3").arg(qApp->property("dataPath").toString())
                                                      .arg(m_MOInfo->profileName())
                                                      .arg(*iter);
-      if (QFileInfo(fileName).exists()) {
-        viewer->addFile(fileName, true);
+      QFileInfo fileInfo(fileName);
+      if (fileInfo.exists()) {
+        if (fileInfo.size() < 1024 * 1024) {
+          viewer->addFile(fileName, true);
+        } else {
+           QMessageBox::warning(parentWidget(), tr("File too big"),
+                                tr("Sorry, the file %1 is too large"
+                                   " to be handled by the Ini Editor").arg(fileName));
+        }
       }
     }
     viewer->show();
