@@ -19,10 +19,12 @@ along with Ini editor plugin.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #include "inieditor.h"
+
+#include "iplugingame.h"
 #include "textviewer.h"
 #include <utility.h>
-#include <igameinfo.h>
 #include <imoinfo.h>
+
 #include <QtPlugin>
 #include <QMessageBox>
 #include <QDir>
@@ -98,22 +100,22 @@ void IniEditor::display() const
     throw MyException(tr("plugin not initialized"));
   }
 
-  std::vector<QString> iniFiles = getIniFiles();
+  QStringList iniFiles = m_MOInfo->managedGame()->getIniFiles();
   if (m_MOInfo->pluginSetting(name(), "external").toBool()) {
-    for (std::vector<QString>::iterator iter = iniFiles.begin(); iter != iniFiles.end(); ++iter) {
+    for (QString const &file : iniFiles) {
       QString fileName = QString("%1/profiles/%2/%3").arg(qApp->property("dataPath").toString())
                                                      .arg(m_MOInfo->profileName())
-                                                     .arg(*iter);
+                                                     .arg(file);
       ::ShellExecuteW(nullptr,m_MOInfo->pluginSetting(name(), "associated").toBool() ? L"open" : L"edit",
                       ToWString(fileName).c_str(), nullptr, nullptr, SW_SHOWNORMAL);
     }
   } else {
     TextViewer *viewer = new TextViewer("Ini Files", parentWidget());
     viewer->setDescription(tr("Ini files are local to the currently selected profile."));
-    for (std::vector<QString>::iterator iter = iniFiles.begin(); iter != iniFiles.end(); ++iter) {
+    for (QString const &file : iniFiles) {
       QString fileName = QString("%1/profiles/%2/%3").arg(qApp->property("dataPath").toString())
                                                      .arg(m_MOInfo->profileName())
-                                                     .arg(*iter);
+                                                     .arg(file);
       QFileInfo fileInfo(fileName);
       if (fileInfo.exists()) {
         if (fileInfo.size() < 1024 * 1024) {
@@ -127,30 +129,6 @@ void IniEditor::display() const
     }
     viewer->show();
   }
-}
-
-
-std::vector<QString> IniEditor::getIniFiles() const
-{
-  std::vector<QString> iniFiles;
-  IGameInfo::Type type = m_MOInfo->gameInfo().type();
-  switch (type) {
-    case IGameInfo::TYPE_OBLIVION: {
-      iniFiles.push_back("oblivion.ini");
-      iniFiles.push_back("oblivionprefs.ini");
-    } break;
-    case IGameInfo::TYPE_FALLOUT3:
-    case IGameInfo::TYPE_FALLOUTNV: {
-      iniFiles.push_back("fallout.ini");
-      iniFiles.push_back("falloutprefs.ini");
-    } break;
-    case IGameInfo::TYPE_SKYRIM: {
-      iniFiles.push_back("skyrim.ini");
-      iniFiles.push_back("skyrimprefs.ini");
-    } break;
-  }
-
-  return iniFiles;
 }
 
 
