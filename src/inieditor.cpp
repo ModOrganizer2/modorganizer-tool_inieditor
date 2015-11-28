@@ -144,6 +144,11 @@ std::vector<QString> IniEditor::getIniFiles() const
       iniFiles.push_back("fallout.ini");
       iniFiles.push_back("falloutprefs.ini");
     } break;
+    case IGameInfo::TYPE_FALLOUT4: {
+      iniFiles.push_back("fallout4.ini");
+      iniFiles.push_back("fallout4prefs.ini");
+      iniFiles.push_back("fallout4custom.ini");
+    } break;
     case IGameInfo::TYPE_SKYRIM: {
       iniFiles.push_back("skyrim.ini");
       iniFiles.push_back("skyrimprefs.ini");
