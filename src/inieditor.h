@@ -50,9 +50,6 @@ public slots:
   virtual void display() const;
 
 private:
-  std::vector<QString> getIniFiles() const;
-
-private:
   const MOBase::IOrganizer *m_MOInfo;
 };
 
