@@ -100,7 +100,7 @@ void IniEditor::display() const
     throw MyException(tr("plugin not initialized"));
   }
 
-  QStringList iniFiles = m_MOInfo->managedGame()->getIniFiles();
+  QStringList iniFiles = m_MOInfo->managedGame()->iniFiles();
   if (m_MOInfo->pluginSetting(name(), "external").toBool()) {
     for (QString const &file : iniFiles) {
       QString fileName = QString("%1/profiles/%2/%3").arg(qApp->property("dataPath").toString())
