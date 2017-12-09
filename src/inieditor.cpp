@@ -103,18 +103,16 @@ void IniEditor::display() const
   QStringList iniFiles = m_MOInfo->managedGame()->iniFiles();
   if (m_MOInfo->pluginSetting(name(), "external").toBool()) {
     for (QString const &file : iniFiles) {
-      QString fileName = QString("%1/profiles/%2/%3").arg(qApp->property("dataPath").toString())
-                                                     .arg(m_MOInfo->profileName())
-                                                     .arg(file);
+      QString fileName = QString("%1/%3").arg(m_MOInfo->profile()->absolutePath())
+                                         .arg(file);
       ::ShellExecuteW(nullptr,m_MOInfo->pluginSetting(name(), "associated").toBool() ? L"open" : L"edit",
                       ToWString(fileName).c_str(), nullptr, nullptr, SW_SHOWNORMAL);
     }
   } else {
     TextViewer *viewer = new TextViewer("Ini Files", parentWidget());
-    viewer->setDescription(tr("Ini files are local to the currently selected profile."));
+    viewer->setDescription(tr("This tool currently only works with the selected local profile settings."));
     for (QString const &file : iniFiles) {
-      QString fileName = QString("%1/profiles/%2/%3").arg(qApp->property("dataPath").toString())
-                                                     .arg(m_MOInfo->profileName())
+      QString fileName = QString("%1/%3").arg(m_MOInfo->profile()->absolutePath())
                                                      .arg(file);
       QFileInfo fileInfo(fileName);
       if (fileInfo.exists()) {
