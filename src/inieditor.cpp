@@ -91,43 +91,78 @@ QString IniEditor::tooltip() const
 
 QIcon IniEditor::icon() const
 {
-  return QIcon(":/inieditor/icon_document");
+	return QIcon(":/inieditor/icon_document");
 }
 
 void IniEditor::display() const
 {
-  if (m_MOInfo == nullptr) {
-    throw MyException(tr("plugin not initialized"));
-  }
+	if (m_MOInfo == nullptr) {
+		throw MyException(tr("plugin not initialized"));
+	}
 
-  QStringList iniFiles = m_MOInfo->managedGame()->iniFiles();
-  if (m_MOInfo->pluginSetting(name(), "external").toBool()) {
-    for (QString const &file : iniFiles) {
-      QString fileName = QString("%1/%3").arg(m_MOInfo->profile()->absolutePath())
-                                         .arg(file);
-      ::ShellExecuteW(nullptr,m_MOInfo->pluginSetting(name(), "associated").toBool() ? L"open" : L"edit",
-                      ToWString(fileName).c_str(), nullptr, nullptr, SW_SHOWNORMAL);
-    }
-  } else {
-    TextViewer *viewer = new TextViewer("Ini Files", parentWidget());
-    viewer->setDescription(tr("This tool currently only works with the selected local profile settings."));
-    for (QString const &file : iniFiles) {
-      QString fileName = QString("%1/%3").arg(m_MOInfo->profile()->absolutePath())
-                                                     .arg(file);
-      QFileInfo fileInfo(fileName);
-      if (fileInfo.exists()) {
-        if (fileInfo.size() < 1024 * 1024) {
-          viewer->addFile(fileName, true);
-        } else {
-           QMessageBox::warning(parentWidget(), tr("File too big"),
-                                tr("Sorry, the file %1 is too large"
-                                   " to be handled by the Ini Editor").arg(fileName));
-        }
-      }
-    }
-    viewer->show();
-  }
+	QStringList iniFiles = m_MOInfo->managedGame()->iniFiles();
+	if (m_MOInfo->pluginSetting(name(), "external").toBool()) {
+		if (m_MOInfo->profile()->localSettingsEnabled())
+		{
+			for (QString const &file : iniFiles) {
+				QString fileName = QString("%1/%3").arg(m_MOInfo->profile()->absolutePath())
+					.arg(file);
+				::ShellExecuteW(nullptr, m_MOInfo->pluginSetting(name(), "associated").toBool() ? L"open" : L"edit",
+					ToWString(fileName).c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+			}
+		}
+		else {
+			for (QString const &file : iniFiles) {
+				QString fileName = QString("%1/%3").arg((m_MOInfo->managedGame()->documentsDirectory()).absolutePath())
+					.arg(file);
+				::ShellExecuteW(nullptr, m_MOInfo->pluginSetting(name(), "associated").toBool() ? L"open" : L"edit",
+					ToWString(fileName).c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+			}
+		}
+	}
+	else {
+		TextViewer *viewer = new TextViewer("Ini Files", parentWidget());
+		if (m_MOInfo->profile()->localSettingsEnabled())
+		{
+			viewer->setDescription(tr("Editing profile local INIs. Local game settings is Enabled."));
+			for (QString const &file : iniFiles) {
+				QString fileName = QString("%1/%3").arg(m_MOInfo->profile()->absolutePath())
+					.arg(file);
+				QFileInfo fileInfo(fileName);
+				if (fileInfo.exists()) {
+					if (fileInfo.size() < 1024 * 1024) {
+						viewer->addFile(fileName, true);
+					}
+					else {
+						QMessageBox::warning(parentWidget(), tr("File too big"),
+							tr("Sorry, the file %1 is too large"
+								" to be handled by the Ini Editor").arg(fileName));
+					}
+				}
+			}
+		}
+		else {
+			viewer->setDescription(tr("Editing global INIs (in mygames). Local game settings is Disabled."));
+			for (QString const &file : iniFiles) {
+				QString fileName = QString("%1/%3").arg((m_MOInfo->managedGame()->documentsDirectory()).absolutePath())
+					.arg(file);
+				QFileInfo fileInfo(fileName);
+				if (fileInfo.exists()) {
+					if (fileInfo.size() < 1024 * 1024) {
+						viewer->addFile(fileName, true);
+					}
+					else {
+						QMessageBox::warning(parentWidget(), tr("File too big"),
+							tr("Sorry, the file %1 is too large"
+								" to be handled by the Ini Editor").arg(fileName));
+					}
+				}
+			}
+		}
+		viewer->show();
+	}
 }
+
 
 
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
