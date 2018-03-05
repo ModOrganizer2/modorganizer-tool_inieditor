@@ -124,7 +124,7 @@ void IniEditor::display() const
 		TextViewer *viewer = new TextViewer("Ini Files", parentWidget());
 		if (m_MOInfo->profile()->localSettingsEnabled())
 		{
-			viewer->setDescription(tr("Editing profile local INIs. Local game settings is Enabled."));
+			viewer->setDescription(tr(" Editing local profile INIs. Local game settings is Enabled.\n \n You can change the ini Editor settings (in the main Mod Organizer settings under the plugins tab) to use an external text editor,\n either notepad or your windows associated program to .INI files."));
 			for (QString const &file : iniFiles) {
 				QString fileName = QString("%1/%3").arg(m_MOInfo->profile()->absolutePath())
 					.arg(file);
@@ -142,7 +142,7 @@ void IniEditor::display() const
 			}
 		}
 		else {
-			viewer->setDescription(tr("Editing global INIs (in mygames). Local game settings is Disabled."));
+			viewer->setDescription(tr(" Editing global INIs (in 'myGames' folder). Local game settings is Disabled.\n \n You can change the ini Editor settings (in the main Mod Organizer settings under the plugins tab) to use an external text editor,\n either notepad or your windows associated program to .INI files."));
 			for (QString const &file : iniFiles) {
 				QString fileName = QString("%1/%3").arg((m_MOInfo->managedGame()->documentsDirectory()).absolutePath())
 					.arg(file);
