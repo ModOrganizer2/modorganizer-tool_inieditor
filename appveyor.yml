@@ -14,11 +14,11 @@ build_script:
 
     C:\Python37-x64\python.exe unimake.py -d c:\projects\modorganizer-build -s Appveyor_Build=True %APPVEYOR_PROJECT_NAME%
 artifacts:
-- path: vsbuild\src\RelWithDebInfo\inieditor.dll
+- path: ..\..\..\install\bin\plugins\inieditor.dll
   name: inieditor_dll
-- path: vsbuild\src\RelWithDebInfo\inieditor.pdb
+- path: ..\..\..\install\pdb\inieditor.pdb
   name: inieditor_pdb
-- path: vsbuild\src\RelWithDebInfo\inieditor.lib
+- path: ..\..\..\install\libs\inieditor.lib
   name: inieditor_lib
 on_success:
   - ps: Set-Location -Path $env:APPVEYOR_BUILD_FOLDER
