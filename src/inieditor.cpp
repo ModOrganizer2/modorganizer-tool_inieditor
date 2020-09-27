@@ -105,16 +105,15 @@ void IniEditor::display() const
 		if (m_MOInfo->profile()->localSettingsEnabled())
 		{
 			for (QString const &file : iniFiles) {
-				QString fileName = QString("%1/%3").arg(m_MOInfo->profile()->absolutePath())
-					.arg(file);
+				QString fileName = QDir(m_MOInfo->profile()->absolutePath())
+					.absoluteFilePath(QFileInfo(file).fileName());
 				::ShellExecuteW(nullptr, m_MOInfo->pluginSetting(name(), "associated").toBool() ? L"open" : L"edit",
 					ToWString(fileName).c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 			}
 		}
 		else {
 			for (QString const &file : iniFiles) {
-				QString fileName = QString("%1/%3").arg((m_MOInfo->managedGame()->documentsDirectory()).absolutePath())
-					.arg(file);
+				QString fileName = QDir(m_MOInfo->managedGame()->documentsDirectory()).absoluteFilePath(file);
 				::ShellExecuteW(nullptr, m_MOInfo->pluginSetting(name(), "associated").toBool() ? L"open" : L"edit",
 					ToWString(fileName).c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 			}
@@ -126,8 +125,8 @@ void IniEditor::display() const
 		{
 			viewer->setDescription(tr(" Editing profile-specific INIs. Profile-specific game INI files are Enabled.\n \n You can change the INI Editor settings (in the main Mod Organizer settings under the plugins tab) to use an external text editor,\n either notepad or your windows associated program to .INI files."));
 			for (QString const &file : iniFiles) {
-				QString fileName = QString("%1/%3").arg(m_MOInfo->profile()->absolutePath())
-					.arg(file);
+				QString fileName = QDir(m_MOInfo->profile()->absolutePath())
+					.absoluteFilePath(QFileInfo(file).fileName());
 				QFileInfo fileInfo(fileName);
 				if (fileInfo.exists()) {
 					if (fileInfo.size() < 1024 * 1024) {
@@ -144,8 +143,7 @@ void IniEditor::display() const
 		else {
 			viewer->setDescription(tr(" Editing global INIs (in 'myGames' folder). Profile-specific game INI files are Disabled.\n \n You can change the INI Editor settings (in the main Mod Organizer settings under the plugins tab) to use an external text editor,\n either notepad or your windows associated program to .INI files."));
 			for (QString const &file : iniFiles) {
-				QString fileName = QString("%1/%3").arg((m_MOInfo->managedGame()->documentsDirectory()).absolutePath())
-					.arg(file);
+				QString fileName = QDir(m_MOInfo->managedGame()->documentsDirectory()).absoluteFilePath(file);
 				QFileInfo fileInfo(fileName);
 				if (fileInfo.exists()) {
 					if (fileInfo.size() < 1024 * 1024) {
