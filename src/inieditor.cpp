@@ -102,22 +102,10 @@ void IniEditor::display() const
 
 	QStringList iniFiles = m_MOInfo->managedGame()->iniFiles();
 	if (m_MOInfo->pluginSetting(name(), "external").toBool()) {
-		if (m_MOInfo->profile()->localSettingsEnabled())
-		{
-			for (QString const &file : iniFiles) {
-				QString fileName = QString("%1/%3").arg(m_MOInfo->profile()->absolutePath())
-					.arg(file);
-				::ShellExecuteW(nullptr, m_MOInfo->pluginSetting(name(), "associated").toBool() ? L"open" : L"edit",
-					ToWString(fileName).c_str(), nullptr, nullptr, SW_SHOWNORMAL);
-			}
-		}
-		else {
-			for (QString const &file : iniFiles) {
-				QString fileName = QString("%1/%3").arg((m_MOInfo->managedGame()->documentsDirectory()).absolutePath())
-					.arg(file);
-				::ShellExecuteW(nullptr, m_MOInfo->pluginSetting(name(), "associated").toBool() ? L"open" : L"edit",
-					ToWString(fileName).c_str(), nullptr, nullptr, SW_SHOWNORMAL);
-			}
+		for (QString const &file : iniFiles) {
+			QString fileName = m_MOInfo->profile()->absoluteIniFilePath(file);
+			::ShellExecuteW(nullptr, m_MOInfo->pluginSetting(name(), "associated").toBool() ? L"open" : L"edit",
+				ToWString(fileName).c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 		}
 	}
 	else {
@@ -125,37 +113,21 @@ void IniEditor::display() const
 		if (m_MOInfo->profile()->localSettingsEnabled())
 		{
 			viewer->setDescription(tr(" Editing profile-specific INIs. Profile-specific game INI files are Enabled.\n \n You can change the INI Editor settings (in the main Mod Organizer settings under the plugins tab) to use an external text editor,\n either notepad or your windows associated program to .INI files."));
-			for (QString const &file : iniFiles) {
-				QString fileName = QString("%1/%3").arg(m_MOInfo->profile()->absolutePath())
-					.arg(file);
-				QFileInfo fileInfo(fileName);
-				if (fileInfo.exists()) {
-					if (fileInfo.size() < 1024 * 1024) {
-						viewer->addFile(fileName, true);
-					}
-					else {
-						QMessageBox::warning(parentWidget(), tr("File too big"),
-							tr("Sorry, the file %1 is too large"
-								" to be handled by the INI Editor").arg(fileName));
-					}
-				}
-			}
 		}
 		else {
 			viewer->setDescription(tr(" Editing global INIs (in 'myGames' folder). Profile-specific game INI files are Disabled.\n \n You can change the INI Editor settings (in the main Mod Organizer settings under the plugins tab) to use an external text editor,\n either notepad or your windows associated program to .INI files."));
-			for (QString const &file : iniFiles) {
-				QString fileName = QString("%1/%3").arg((m_MOInfo->managedGame()->documentsDirectory()).absolutePath())
-					.arg(file);
-				QFileInfo fileInfo(fileName);
-				if (fileInfo.exists()) {
-					if (fileInfo.size() < 1024 * 1024) {
-						viewer->addFile(fileName, true);
-					}
-					else {
-						QMessageBox::warning(parentWidget(), tr("File too big"),
-							tr("Sorry, the file %1 is too large"
-								" to be handled by the INI Editor").arg(fileName));
-					}
+		}			
+		for (QString const& file : iniFiles) {
+			QString fileName = m_MOInfo->profile()->absoluteIniFilePath(file);
+			QFileInfo fileInfo(fileName);
+			if (fileInfo.exists()) {
+				if (fileInfo.size() < 1024 * 1024) {
+					viewer->addFile(fileName, true);
+				}
+				else {
+					QMessageBox::warning(parentWidget(), tr("File too big"),
+						tr("Sorry, the file %1 is too large"
+							" to be handled by the INI Editor").arg(fileName));
 				}
 			}
 		}
