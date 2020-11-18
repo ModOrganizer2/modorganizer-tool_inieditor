@@ -50,6 +50,11 @@ QString IniEditor::name() const
   return "INI Editor";
 }
 
+QString IniEditor::localizedName() const
+{
+	return tr("INI Editor");
+}
+
 QString IniEditor::author() const
 {
   return "Tannin";
@@ -63,11 +68,6 @@ QString IniEditor::description() const
 VersionInfo IniEditor::version() const
 {
   return VersionInfo(1, 1, 0, VersionInfo::RELEASE_FINAL);
-}
-
-bool IniEditor::isActive() const
-{
-  return true;
 }
 
 QList<PluginSetting> IniEditor::settings() const
@@ -116,7 +116,7 @@ void IniEditor::display() const
 		}
 		else {
 			viewer->setDescription(tr(" Editing global INIs (in 'myGames' folder). Profile-specific game INI files are Disabled.\n \n You can change the INI Editor settings (in the main Mod Organizer settings under the plugins tab) to use an external text editor,\n either notepad or your windows associated program to .INI files."));
-		}			
+		}
 		for (QString const& file : iniFiles) {
 			QString fileName = m_MOInfo->profile()->absoluteIniFilePath(file);
 			QFileInfo fileInfo(fileName);
