@@ -4,11 +4,12 @@
 <context>
     <name>IniEditor</name>
     <message>
-        <location filename="inieditor.cpp" line="60"/>
+        <location filename="inieditor.cpp" line="65"/>
         <source>Very basic editor for INI files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="inieditor.cpp" line="55"/>
         <location filename="inieditor.cpp" line="84"/>
         <source>INI Editor</source>
         <translation type="unfinished"></translation>
@@ -24,7 +25,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="inieditor.cpp" line="127"/>
+        <location filename="inieditor.cpp" line="115"/>
         <source> Editing profile-specific INIs. Profile-specific game INI files are Enabled.
  
  You can change the INI Editor settings (in the main Mod Organizer settings under the plugins tab) to use an external text editor,
@@ -32,19 +33,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="inieditor.cpp" line="137"/>
-        <location filename="inieditor.cpp" line="155"/>
+        <location filename="inieditor.cpp" line="128"/>
         <source>File too big</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="inieditor.cpp" line="138"/>
-        <location filename="inieditor.cpp" line="156"/>
+        <location filename="inieditor.cpp" line="129"/>
         <source>Sorry, the file %1 is too large to be handled by the INI Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="inieditor.cpp" line="145"/>
+        <location filename="inieditor.cpp" line="118"/>
         <source> Editing global INIs (in &apos;myGames&apos; folder). Profile-specific game INI files are Disabled.
  
  You can change the INI Editor settings (in the main Mod Organizer settings under the plugins tab) to use an external text editor,
