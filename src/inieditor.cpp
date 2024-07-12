@@ -20,15 +20,15 @@ along with Ini editor plugin.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "inieditor.h"
 
-#include "iplugingame.h"
-#include "textviewer.h"
-#include <utility.h>
-#include <imoinfo.h>
-
 #include <QtPlugin>
 #include <QMessageBox>
 #include <QDir>
 #include <QApplication>
+
+#include <uibase/iplugingame.h>
+#include <uibase/textviewer.h>
+#include <uibase/utility.h>
+#include <uibase/imoinfo.h>
 
 
 using namespace MOBase;
