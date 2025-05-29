@@ -27,7 +27,7 @@
     <message>
         <location filename="inieditor.cpp" line="115"/>
         <source> Editing profile-specific INIs. Profile-specific game INI files are Enabled.
- 
+
  You can change the INI Editor settings (in the main Mod Organizer settings under the plugins tab) to use an external text editor,
  either notepad or your windows associated program to .INI files.</source>
         <translation type="unfinished"></translation>
@@ -45,7 +45,7 @@
     <message>
         <location filename="inieditor.cpp" line="118"/>
         <source> Editing global INIs (in &apos;myGames&apos; folder). Profile-specific game INI files are Disabled.
- 
+
  You can change the INI Editor settings (in the main Mod Organizer settings under the plugins tab) to use an external text editor,
  either notepad or your windows associated program to .INI files.</source>
         <translation type="unfinished"></translation>

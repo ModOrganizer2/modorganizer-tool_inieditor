@@ -26,15 +26,14 @@ class IniEditor : public MOBase::IPluginTool
 {
   Q_OBJECT
   Q_INTERFACES(MOBase::IPlugin MOBase::IPluginTool)
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
   Q_PLUGIN_METADATA(IID "org.tannin.IniEditor")
 #endif
 
 public:
-
   IniEditor();
 
-  virtual bool init(MOBase::IOrganizer *moInfo) override;
+  virtual bool init(MOBase::IOrganizer* moInfo) override;
   virtual QString name() const override;
   virtual QString localizedName() const override;
   virtual QString author() const override;
@@ -50,7 +49,7 @@ public slots:
   virtual void display() const;
 
 private:
-  const MOBase::IOrganizer *m_MOInfo;
+  const MOBase::IOrganizer* m_MOInfo;
 };
 
-#endif // INIEDITOR_H
+#endif  // INIEDITOR_H
