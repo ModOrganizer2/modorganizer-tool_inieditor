@@ -17,29 +17,23 @@ You should have received a copy of the GNU General Public License
 along with Ini editor plugin.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "inieditor.h"
 
-#include <QtPlugin>
-#include <QMessageBox>
-#include <QDir>
 #include <QApplication>
+#include <QDir>
+#include <QMessageBox>
+#include <QtPlugin>
 
+#include <uibase/imoinfo.h>
 #include <uibase/iplugingame.h>
 #include <uibase/textviewer.h>
 #include <uibase/utility.h>
-#include <uibase/imoinfo.h>
-
 
 using namespace MOBase;
 
+IniEditor::IniEditor() : m_MOInfo(nullptr) {}
 
-IniEditor::IniEditor()
-  : m_MOInfo(nullptr)
-{
-}
-
-bool IniEditor::init(IOrganizer *moInfo)
+bool IniEditor::init(IOrganizer* moInfo)
 {
   m_MOInfo = moInfo;
   return true;
@@ -52,7 +46,7 @@ QString IniEditor::name() const
 
 QString IniEditor::localizedName() const
 {
-	return tr("INI Editor");
+  return tr("INI Editor");
 }
 
 QString IniEditor::author() const
@@ -73,9 +67,14 @@ VersionInfo IniEditor::version() const
 QList<PluginSetting> IniEditor::settings() const
 {
   QList<PluginSetting> result;
-  result.push_back(PluginSetting("external", "Use an external editor to open the files", QVariant(false)));
-  result.push_back(PluginSetting("associated", "When using an external editor, use the application associated with \"INI\" files. "
-                                 "If false, uses the \"edit\" command which usually invokes regular notepad.", QVariant(true)));
+  result.push_back(PluginSetting("external", "Use an external editor to open the files",
+                                 QVariant(false)));
+  result.push_back(PluginSetting(
+      "associated",
+      "When using an external editor, use the application associated with \"INI\" "
+      "files. "
+      "If false, uses the \"edit\" command which usually invokes regular notepad.",
+      QVariant(true)));
   return result;
 }
 
@@ -91,52 +90,57 @@ QString IniEditor::tooltip() const
 
 QIcon IniEditor::icon() const
 {
-	return QIcon(":/inieditor/icon_document");
+  return QIcon(":/inieditor/icon_document");
 }
 
 void IniEditor::display() const
 {
-	if (m_MOInfo == nullptr) {
-		throw MyException(tr("plugin not initialized"));
-	}
+  if (m_MOInfo == nullptr) {
+    throw MyException(tr("plugin not initialized"));
+  }
 
-	QStringList iniFiles = m_MOInfo->managedGame()->iniFiles();
-	if (m_MOInfo->pluginSetting(name(), "external").toBool()) {
-		for (QString const &file : iniFiles) {
-			QString fileName = m_MOInfo->profile()->absoluteIniFilePath(file);
-			::ShellExecuteW(nullptr, m_MOInfo->pluginSetting(name(), "associated").toBool() ? L"open" : L"edit",
-				ToWString(fileName).c_str(), nullptr, nullptr, SW_SHOWNORMAL);
-		}
-	}
-	else {
-		TextViewer *viewer = new TextViewer("INI Files", parentWidget());
-		if (m_MOInfo->profile()->localSettingsEnabled())
-		{
-			viewer->setDescription(tr(" Editing profile-specific INIs. Profile-specific game INI files are Enabled.\n \n You can change the INI Editor settings (in the main Mod Organizer settings under the plugins tab) to use an external text editor,\n either notepad or your windows associated program to .INI files."));
-		}
-		else {
-			viewer->setDescription(tr(" Editing global INIs (in 'myGames' folder). Profile-specific game INI files are Disabled.\n \n You can change the INI Editor settings (in the main Mod Organizer settings under the plugins tab) to use an external text editor,\n either notepad or your windows associated program to .INI files."));
-		}
-		for (QString const& file : iniFiles) {
-			QString fileName = m_MOInfo->profile()->absoluteIniFilePath(file);
-			QFileInfo fileInfo(fileName);
-			if (fileInfo.exists()) {
-				if (fileInfo.size() < 1024 * 1024) {
-					viewer->addFile(fileName, true);
-				}
-				else {
-					QMessageBox::warning(parentWidget(), tr("File too big"),
-						tr("Sorry, the file %1 is too large"
-							" to be handled by the INI Editor").arg(fileName));
-				}
-			}
-		}
-		viewer->show();
-	}
+  QStringList iniFiles = m_MOInfo->managedGame()->iniFiles();
+  if (m_MOInfo->pluginSetting(name(), "external").toBool()) {
+    for (QString const& file : iniFiles) {
+      QString fileName = m_MOInfo->profile()->absoluteIniFilePath(file);
+      ::ShellExecuteW(nullptr,
+                      m_MOInfo->pluginSetting(name(), "associated").toBool() ? L"open"
+                                                                             : L"edit",
+                      ToWString(fileName).c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+    }
+  } else {
+    TextViewer* viewer = new TextViewer("INI Files", parentWidget());
+    if (m_MOInfo->profile()->localSettingsEnabled()) {
+      viewer->setDescription(tr(
+          " Editing profile-specific INIs. Profile-specific game INI files are "
+          "Enabled.\n \n You can change the INI Editor settings (in the main Mod "
+          "Organizer settings under the plugins tab) to use an external text editor,\n "
+          "either notepad or your windows associated program to .INI files."));
+    } else {
+      viewer->setDescription(tr(
+          " Editing global INIs (in 'myGames' folder). Profile-specific game INI files "
+          "are Disabled.\n \n You can change the INI Editor settings (in the main Mod "
+          "Organizer settings under the plugins tab) to use an external text editor,\n "
+          "either notepad or your windows associated program to .INI files."));
+    }
+    for (QString const& file : iniFiles) {
+      QString fileName = m_MOInfo->profile()->absoluteIniFilePath(file);
+      QFileInfo fileInfo(fileName);
+      if (fileInfo.exists()) {
+        if (fileInfo.size() < 1024 * 1024) {
+          viewer->addFile(fileName, true);
+        } else {
+          QMessageBox::warning(parentWidget(), tr("File too big"),
+                               tr("Sorry, the file %1 is too large"
+                                  " to be handled by the INI Editor")
+                                   .arg(fileName));
+        }
+      }
+    }
+    viewer->show();
+  }
 }
 
-
-
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 Q_EXPORT_PLUGIN2(iniEditor, IniEditor)
 #endif
