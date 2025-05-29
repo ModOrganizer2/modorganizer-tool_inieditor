@@ -20,14 +20,14 @@ along with Ini editor plugin.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef INIEDITOR_H
 #define INIEDITOR_H
 
-#include <iplugintool.h>
+#include <uibase/iplugintool.h>
 
 class IniEditor : public MOBase::IPluginTool
 {
   Q_OBJECT
   Q_INTERFACES(MOBase::IPlugin MOBase::IPluginTool)
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-  Q_PLUGIN_METADATA(IID "org.tannin.IniEditor" FILE "inieditor.json")
+  Q_PLUGIN_METADATA(IID "org.tannin.IniEditor")
 #endif
 
 public:
